@@ -1,38 +1,21 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
+@SequenceGenerator(
+        name = "MEMBER_SEQ_GENERATOR",
+        sequenceName = "MEMBER_SEQ", // 매핑할 데이터베이스 시퀀스 이름
+        initialValue = 1, allocationSize = 50)
 public class Member {
 
-    @Id
+    @Id // 직접 할당 @ID만 사용, 자동 생성(@GeneratedValue)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "MEMBER_SEQ_GENERATOR") // IDENTITY: 기본키 생성을 데이터 베이스에 위임, 권장 Long + 대체키 + 키 생성전략 사용
     private Long id;
 
     @Column(name = "name", nullable = false) // 컬럼 매핑 nullable
     private String username;
-
-    private int age;
-
-    @Enumerated(EnumType.STRING) // enum 타입 매핑 그냥 STRING 옵션 사용한다고 생각
-    private RoleType roleType;
-
-    @Temporal(TemporalType.TIMESTAMP) // 날짜 타입 매핑
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-
-    private LocalDate testLocalDate;
-    private LocalDateTime testLocalDateTime;
-
-    @Lob // BLOB, CLOB 매핑
-    private String description;
-
-    @Transient // 특정 필드를 컬럼에 매핑하지 않음(매핑 무시)
-    private int temp;
 
     public Member() {
     }
@@ -51,53 +34,5 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public RoleType getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(RoleType roleType) {
-        this.roleType = roleType;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getTemp() {
-        return temp;
-    }
-
-    public void setTemp(int temp) {
-        this.temp = temp;
     }
 }
