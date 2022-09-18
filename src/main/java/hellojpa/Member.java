@@ -1,9 +1,9 @@
 package hellojpa;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Member {
@@ -11,17 +11,30 @@ public class Member {
     @Id
     private Long id;
 
-    @Column(unique = true, length = 10) // DDL 생성기능
-    private String name;
+    @Column(name = "name", nullable = false) // 컬럼 매핑 nullable
+    private String username;
 
     private int age;
 
-    public Member() {
-    }
+    @Enumerated(EnumType.STRING) // enum 타입 매핑 그냥 STRING 옵션 사용한다고 생각
+    private RoleType roleType;
 
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    @Temporal(TemporalType.TIMESTAMP) // 날짜 타입 매핑
+    private Date createDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    private LocalDate testLocalDate;
+    private LocalDateTime testLocalDateTime;
+
+    @Lob // BLOB, CLOB 매핑
+    private String description;
+
+    @Transient // 특정 필드를 컬럼에 매핑하지 않음(매핑 무시)
+    private int temp;
+
+    public Member() {
     }
 
     public Long getId() {
@@ -32,11 +45,59 @@ public class Member {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getTemp() {
+        return temp;
+    }
+
+    public void setTemp(int temp) {
+        this.temp = temp;
     }
 }
