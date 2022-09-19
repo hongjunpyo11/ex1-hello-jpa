@@ -12,10 +12,7 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
-
-    @ManyToOne // 연관관계 주인(다쪽)
+    @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
