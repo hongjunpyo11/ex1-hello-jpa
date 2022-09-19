@@ -13,7 +13,7 @@ public class Member {
     private String username;
 
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
+    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) // 일대다 양방향 매핑시 무효화가 필요함 서로 주인이 되는걸 막기 위함
     private Team team;
 
     public Long getId() {
@@ -32,20 +32,4 @@ public class Member {
         this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", team=" + team +
-                '}';
-    }
 }
