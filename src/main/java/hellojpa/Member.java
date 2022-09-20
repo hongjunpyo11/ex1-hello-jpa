@@ -1,14 +1,12 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
 
-    /*
-    일대일 관계는 그 반대도 일대일
-    주 테이블이나 대상 테이블 중에 외래키 선택가능
-     */
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -23,6 +21,10 @@ public class Member {
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
+
+    @ManyToMany
+    @JoinTable(name = "MEMBER_PRODUCT")
+    private List<Product> products = new ArrayList<>();
 
     public Long getId() {
         return id;
