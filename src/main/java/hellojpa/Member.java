@@ -5,6 +5,10 @@ import javax.persistence.*;
 @Entity
 public class Member {
 
+    /*
+    일대일 관계는 그 반대도 일대일
+    주 테이블이나 대상 테이블 중에 외래키 선택가능
+     */
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -13,8 +17,12 @@ public class Member {
     private String username;
 
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) // 일대다 양방향 매핑시 무효화가 필요함 서로 주인이 되는걸 막기 위함
+    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
     private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     public Long getId() {
         return id;
