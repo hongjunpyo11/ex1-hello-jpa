@@ -18,16 +18,19 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("member1"); // 빌더패턴 학습 (setter 사용 안한고)
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice(10000);
 
-            em.persist(member);
+            em.persist(movie);
 
-            Team team = new Team();
-            team.setName("teamA");
-            team.getMembers().add(member);
+            em.clear();
+            em.flush();
 
-            em.persist(team);
+            Movie findMove = em.find(Movie.class, movie.getId());
+            System.out.println("findMove = " + findMove);
 
             tx.commit();
         } catch (Exception e) {
