@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -17,23 +19,30 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("hello");
-
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setUsername("hello1");
+            em.persist(member1);
 
             em.flush();
             em.clear();
 
-//            Member findMember = em.find(Member.class, member.getId());
-            Member findMember = em.getReference(Member.class, member.getId());
-            System.out.println("findMember = " + findMember.getClass());
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.username = " + findMember.getUsername());
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass()); // Proxy
+//            refMember.getUsername(); // 프록시 강제 초기화
+
+            Hibernate.initialize(refMember); // 프록시 강제 초기화
+
+            /**
+             * 프록시의 특징
+             * 프록시 객체는 처음 사용할 때 한 번만 초기화
+             * 프록시 객체를 초기화 할 때, 프록시 객체가 실제 엔티티로 바뀌는 것은 아님, 초기화되면 프록시 객체를 통해서 실제 엔티티에 접근 가능
+             * 영속성 컨텍스트에 찾는 엔티티가 이미 있으면 em.egtReference()룰 호출해도 실제 엔티티 반환
+             */
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
@@ -41,16 +50,6 @@ public class JpaMain {
         emf.close();
     }
 
-    private static void printMember(Member member) {
-        System.out.println("member = " + member.getUsername());
-    }
 
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username = " + username);
 
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
-
-    }
 }
