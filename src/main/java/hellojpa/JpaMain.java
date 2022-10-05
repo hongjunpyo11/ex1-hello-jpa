@@ -24,12 +24,6 @@ public class JpaMain {
             Address newAddress = new Address("NewCity", address.getStreet(), address.getZipcode());
             member.setHomeAddress(newAddress);
 
-            /** 한계
-             * 임베디드같은 값타입을 여러 엔티티에서 공유하면 위험함
-             * 값 타입의 실제 인스턴스인 값을 공유하는 것은 위험
-             * 대신 값(인스턴스)를 복사해서 사용
-             */
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
