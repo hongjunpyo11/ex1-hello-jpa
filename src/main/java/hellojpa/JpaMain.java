@@ -15,36 +15,14 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setHomeAddress(new Address("homeCity", "street", "10000"));
+            List<Member> result = em.createQuery(
+                    "select  m from Member  m where m.username like '%kim%'",
+                    Member.class
+            ).getResultList();
 
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("족발");
-            member.getFavoriteFoods().add("피자");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
-            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            System.out.println("=============== Start ===============");
-            Member findMember = em.find(Member.class, member.getId());
-
-            // homeCity -> newCity
-//            findMember.getHomeAddress().setCity("newCity"); XXX 안됨 이렇게하면
-//            Address a = findMember.getHomeAddress();
-//            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode())); // 수정은 값타입 통으로 완전히 교체를 해주어라
-
-            // 치킨 -> 한식
-//            findMember.getFavoriteFoods().remove("치킨");
-//            findMember.getFavoriteFoods().add("한식");
-//
-//            findMember.getAddressHistory().remove(new Address("old1", "street", "10000"));
-//            findMember.getAddressHistory().add(new Address("newCity1", "street", "10000"));
+            for (Member member : result) {
+                System.out.println("member = " + member);
+            }
 
             tx.commit();
         } catch (Exception e) {
@@ -56,7 +34,22 @@ public class JpaMain {
 
         emf.close();
     }
-
-
-
 }
+
+/**
+ * JPQL 소개
+ * JPA를 사용하면 엔티티 객체를 중심으로 개발
+ * 문제는 검색 쿼리
+ * 검색을 할 때도 테이블이 아닌 엔티티 객체를 대상으로 검색
+ * 모든 DB 데이터를 객체로 변환해서 검색하는 것은 불가능
+ * 애플릭케이션이 필요한 데이터만 DB에 불러오려면 결국 검색 조건이 포함된 SQL이 필요
+ *
+ * JPA는 SQL을 추상화한 JPQL이라는 객체 지향 쿼리 언어 제공
+ * SQL 문법과 유사
+ * JPQL은 엔티티 객체를 대상으로 쿼리
+ * SQL은 데이터베이스 테이블을 대상으로 쿼리
+ *
+ * 테이블이 아닌 객체를 대상으로 검색하는 객체 지향 쿼리
+ * SQL을 추상화해서 특정 데이터베이스 SQL에 의존 X
+ * JPQL을 한마디로 정의하면 객체 지향 SQL
+ */
